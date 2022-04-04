@@ -957,7 +957,33 @@ foreach($json as $item){
                               </div>  
                                  <div id="bar" style="margin:0;width:50%">
                               <div id="dv1">
-                              <button type="button" style="color:white;background:#5252ff;margin-top:1vw" onclick=''>Sauvegarder</button>
+                              <button type="button" style="color:white;background:#5252ff;margin-top:1vw" onclick='SaveDoc()'>Sauvegarder</button>
+                                  <button type="submit" name="savedoc" id="savedoc"></button>
+                                  <?php
+                                   if(isset($_POST['savedoc'])){
+                    $nomdoc = $_POST['nomdoc'];
+                    $prenomdoc = $_POST['prenomdoc'];
+                    $anneedenaissance= $_POST['anneedenaissancedoc'];
+                    $email = $_POST['emaildoc'];
+                    $mobile = $_POST['mobiledoc'];
+                                       $adresse = $_POST['adressedoc'];
+                    if(!file_exists("doctors.txt"))
+                       file_put_contents("doctors.txt", "");
+ $json = json_decode(file_get_contents("doctors.txt"),TRUE);
+  if(!empty($json))
+                            {
+                               $json[count($json)+1] = array("nom" => $nomdoc, "prenom" => $prenomdoc,"anneedenaissance"=>$anneedenaissance,"email"=>$email, "mobile"=>$mobile,"adresse"=>$adresse); 
+                            }
+                           else{
+                            $json[count($json)+1] = array("nom" => $nomdoc, "prenom" => $prenomdoc,"anneedenaissance"=>$anneedenaissance,"email"=>$email, "mobile"=>$mobile,"adresse"=>$adresse); 
+                           }
+                           file_put_contents("doctors.txt", json_encode($json));
+                        
+                    
+                    
+                     echo "<script>window.location.href='dashboard.php?page=6_1'</script>";
+                }
+                                  ?>
                               </div>
                               <div id="dv2">
                               <button type="button" style="color:white;background:#ff2424;margin-top:1vw" onclick=''>Annuler</button>
@@ -1498,7 +1524,17 @@ foreach($json as $item){
                 
                 subs.style.display="block";
             } 
-                 
+                    if(page=="6_1"){
+                Success();
+                document.getElementById("informations-generales").style.display="block";
+                
+                  var main = items[3].getElementsByClassName("item-main")[0];
+             var subs = items[3].getElementsByClassName("item-subs")[0];
+                
+                subs.style.display="block";
+                        Slide1(1);
+            } 
+                
                  
             }
             }, 100);
@@ -1860,6 +1896,11 @@ document.getElementById("patient").value=name;
             function Stats(){
                 document.getElementById("dashboard1").click();
             }
+            function SaveDoc(){ document.getElementById("savedoc").click();
+            }
+            
+            
+            
 </script>
         </form> 
     </body>
