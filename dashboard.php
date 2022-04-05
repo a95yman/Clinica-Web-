@@ -99,20 +99,29 @@ session_start();
                        <img src="images/database.png" class="icon"/>
                        <a>Fichier de donnees</a>
                    </div>
-                       <div class="item-main">
+                       <div class="item-main" onclick=";document.getElementById('logout').click();">
+                           <button hidden id="logout" name="logout">
+                          
+                           </button>
+                            <?php
+                               if(isset($_POST['logout'])){
+                                   $_SESSION['user'] = "0";
+                                 echo "<script>window.location.href='login.php'</script>";
+                               }
+                               ?>
                        <img src="images/delete.png" class="icon"/>
-                       <a>Suppression de donnees</a>
+                       <a>Se deconnecter</a>
                    </div>
                    </div>
                </div>
-               <div class="item">
-                   <div class="item-main">
+               <div class="item" onclick="window.location.href='dashboard.php?page=statistiques'">
+                   <div class="item-main"  >
                        <img src="images/statistic.png" class="icon"/>
                        <a>Les statistiques</a>
                    </div>
                </div>
-                <div class="item">
-                   <div class="item-main">
+                <div class="item" onclick="Aide()">
+                   <div class="item-main" >
                        <img src="images/help.png" class="icon"/>
                        <a>Aide</a>
                    </div>
@@ -875,7 +884,18 @@ foreach($json as $item){
                        <h3>Gestion des resources humaines</h3>
                             <h3 style="margin-top:0.5vw;margin-bottom:1vw;color:#ff5252">Les docteurs</h3>
                            <button type="button" onclick="Slide1(1)">Ajouter nouveau</button>
-                           <button>Voir liste</button>
+                           <button name="list1">Voir liste</button>
+                           <?php
+                           if(isset($_POST['list1'])){
+                               echo "<script>window.location.href='dashboard.php?page=6_liste1'</script>";
+                           }
+                            if(isset($_POST['list2'])){
+                               echo "<script>window.location.href='dashboard.php?page=6_liste2'</script>";
+                           }
+                            if(isset($_POST['list3'])){
+                               echo "<script>window.location.href='dashboard.php?page=6_liste3'</script>";
+                           }
+                           ?>
                        </div>
                        <div id="dv2">
                        <img src="images/doctors.png"/>
@@ -886,7 +906,7 @@ foreach($json as $item){
                        <h3>Gestion des resources humaines</h3>
                             <h3 style="margin-top:0.5vw;margin-bottom:1vw;color:#ff5252">Les utilisateurs</h3>
                             <button type="button" onclick="Slide1(2)">Ajouter nouveau</button>
-                           <button>Voir liste</button>
+                           <button name="list2">Voir liste</button>
                        </div>
                        <div id="dv2">
                        <img src="images/users.png"/>
@@ -897,13 +917,129 @@ foreach($json as $item){
                        <h3>Gestion des resources de la clinique</h3>
                             <h3 style="margin-top:0.5vw;margin-bottom:1vw;color:#ff5252">Les medicaments</h3>
                             <button type="button" onclick="Slide1(3)">Ajouter nouveau</button>
-                           <button>Voir liste</button>
+                           <button name="list3">Voir liste</button>
                        </div>
                        <div id="dv2">
                        <img src="images/medications.png"/>
                        </div>
                        </div>
                    </div>
+                       <div style="display:none" name="gd1"  id="gridview">
+                       
+                           
+                           <?php
+                            if(file_exists("doctors.txt")){
+                                $json = json_decode(file_get_contents("doctors.txt"),TRUE);
+
+            
+             if(!empty($json)){
+               echo "<table id='table1'><tr><th>Nom</th><th>Prenom</th><th>Annee de naissance</th><th >Email</th><th>Mobile</th><th>Adresse</th></tr>";
+                 $cs=0;
+                 $col="";
+                  foreach($json as $item){
+                      if($cs==0){
+                          $col="white";
+                          $cs=1;
+                      }
+                      else{
+                          $col="#eee";
+                          $cs=0;
+                      }
+                      echo "<tr style='background:".$col."'>";
+                      echo "<td style='vertical-align: middle' style='vertical-align: middle'>".$item['nom']."</td>";
+                      echo "<td style='vertical-align: middle'>".$item['prenom']."</td>";
+                      echo "<td style='vertical-align: middle'>".$item['anneedenaissance']."</td>";
+                      echo "<td style='vertical-align: middle'>".$item['email']."</td>";
+                      echo "<td style='vertical-align: middle'>".$item['mobile']."</td>";
+                      echo "<td style='vertical-align: middle'>".$item['adresse']."</td>";
+                      
+                      echo "</tr>";
+                  }
+                 echo "</table>";
+                 
+             }
+                            }
+                           ?>
+                           
+                       
+                       </div>
+                             <div style="display:none" name="gd2"  id="gridview">
+                       
+                           
+                           <?php
+                            if(file_exists("users.txt")){
+                                $json = json_decode(file_get_contents("users.txt"),TRUE);
+
+            
+             if(!empty($json)){
+               echo "<table id='table1'><tr><th>Id </th><th>Nom Utilisateur</th><th>Mot de passe</th></tr>";
+                 $cs=0;
+                 $col="";
+                 $counter=0;
+                  foreach($json as $item){
+                      $counter++;
+                      if($cs==0){
+                          $col="white";
+                          $cs=1;
+                      }
+                      else{
+                          $col="#eee";
+                          $cs=0;
+                      }
+                      echo "<tr style='background:".$col."'>";
+                      echo "<td style='vertical-align: middle' style='vertical-align: middle'>".$counter."</td>";
+                      echo "<td style='vertical-align: middle'>".$item['nomutilisateur']."</td>";
+                      echo "<td style='vertical-align: middle'>".$item['motdepasse']."</td>";
+                     
+                      echo "</tr>";
+                  }
+                 echo "</table>";
+                 
+             }
+                            }
+                           ?>
+                           
+                       
+                       </div>
+                                          <div style="display:none" name="gd3"   id="gridview">
+                       
+                           
+                           <?php
+                            if(file_exists("medicaments.txt")){
+                                $json = json_decode(file_get_contents("medicaments.txt"),TRUE);
+
+            
+             if(!empty($json)){
+               echo "<table id='table1'><tr><th>Nom</th><th>Type</th><th>Date expiration</th><th>Observation</th></tr>";
+                 $cs=0;
+                 $col="";
+                 $counter=0;
+                  foreach($json as $item){
+                      $counter++;
+                      if($cs==0){
+                          $col="white";
+                          $cs=1;
+                      }
+                      else{
+                          $col="#eee";
+                          $cs=0;
+                      }
+                      echo "<tr style='background:".$col."'>";
+                      echo "<td style='vertical-align: middle' style='vertical-align: middle'>".$item['nommed']."</td>";
+                      echo "<td style='vertical-align: middle'>".$item['typemed']."</td>";
+                      echo "<td style='vertical-align: middle'>".$item['datexp']."</td>";
+                       echo "<td style='vertical-align: middle'>".$item['observationmed']."</td>";
+                     
+                      echo "</tr>";
+                  }
+                 echo "</table>";
+                 
+             }
+                            }
+                           ?>
+                           
+                       
+                       </div>
                    <button type="submit" id="inf" name="inf" hidden/>
                    <?php
                    if(isset($_POST['inf'])){
@@ -911,7 +1047,7 @@ foreach($json as $item){
                       window.location.href='Dashboard.php?page=6';</script>";
                    }
                    ?>
-                   
+            
                    
                       </td>
                       <td id="td1" style="height:100%">
@@ -958,7 +1094,7 @@ foreach($json as $item){
                                  <div id="bar" style="margin:0;width:50%">
                               <div id="dv1">
                               <button type="button" style="color:white;background:#5252ff;margin-top:1vw" onclick='SaveDoc()'>Sauvegarder</button>
-                                  <button type="submit" name="savedoc" id="savedoc"></button>
+                                  <button hidden type="submit" name="savedoc" id="savedoc"></button>
                                   <?php
                                    if(isset($_POST['savedoc'])){
                     $nomdoc = $_POST['nomdoc'];
@@ -975,7 +1111,7 @@ foreach($json as $item){
                                $json[count($json)+1] = array("nom" => $nomdoc, "prenom" => $prenomdoc,"anneedenaissance"=>$anneedenaissance,"email"=>$email, "mobile"=>$mobile,"adresse"=>$adresse); 
                             }
                            else{
-                            $json[count($json)+1] = array("nom" => $nomdoc, "prenom" => $prenomdoc,"anneedenaissance"=>$anneedenaissance,"email"=>$email, "mobile"=>$mobile,"adresse"=>$adresse); 
+                            $json[1] = array("nom" => $nomdoc, "prenom" => $prenomdoc,"anneedenaissance"=>$anneedenaissance,"email"=>$email, "mobile"=>$mobile,"adresse"=>$adresse); 
                            }
                            file_put_contents("doctors.txt", json_encode($json));
                         
@@ -986,7 +1122,7 @@ foreach($json as $item){
                                   ?>
                               </div>
                               <div id="dv2">
-                              <button type="button" style="color:white;background:#ff2424;margin-top:1vw" onclick=''>Annuler</button>
+                              <button type="button" style="color:white;background:#ff2424;margin-top:1vw" onclick='Cleardoc()'>Annuler</button>
                               </div>
                               </div>  
                             
@@ -1020,10 +1156,32 @@ foreach($json as $item){
                               </div>  
                                  <div id="bar" style="margin:0;width:50%">
                               <div id="dv1">
-                              <button type="button" style="color:white;background:#5252ff;margin-top:1vw" onclick=''>Sauvegarder</button>
+                              <button type="button" style="color:white;background:#5252ff;margin-top:1vw" onclick='SaveUser()'>Sauvegarder</button>
+                                  <button hidden id="saveuser" name="saveuser"></button>
+                                   <?php
+                                   if(isset($_POST['saveuser'])){
+                    $nomutilisateur = $_POST['nomutilisateur'];
+                    $motdepasse = $_POST['motdepasse'];
+                    if(!file_exists("users.txt"))
+                       file_put_contents("users.txt", "");
+ $json = json_decode(file_get_contents("users.txt"),TRUE);
+  if(!empty($json))
+                            {
+                               $json[count($json)+1] = array("nomutilisateur" => $nomutilisateur, "motdepasse" => $motdepasse); 
+                            }
+                           else{
+                           $json[1] = array("nomutilisateur" => $nomutilisateur, "motdepasse" => $motdepasse); 
+                           }
+                           file_put_contents("users.txt", json_encode($json));
+                        
+                    
+                    
+                     echo "<script>window.location.href='dashboard.php?page=6_2'</script>";
+                }
+                                  ?>
                               </div>
                               <div id="dv2">
-                              <button type="button" style="color:white;background:#ff2424;margin-top:1vw" onclick=''>Annuler</button>
+                              <button type="button" style="color:white;background:#ff2424;margin-top:1vw" onclick='ClearUser()'>Annuler</button>
                               </div>
                               </div>  
                             
@@ -1047,7 +1205,7 @@ foreach($json as $item){
                               <div id="dv2">
                                   
                               <h3 style="margin-left:0">Type medicament*</h3>
-                                  <input type="text" id="nommed" name="nommed"/>
+                                  <input type="text" id="typemed" name="typemed"/>
                               </div>
                               </div>  
                          <div id="bar" style="margin:0;width:50%">
@@ -1063,10 +1221,34 @@ foreach($json as $item){
                               </div>  
                                  <div id="bar" style="margin:0;width:50%">
                               <div id="dv1">
-                              <button type="button" style="color:white;background:#5252ff;margin-top:1vw" onclick=''>Sauvegarder</button>
+                              <button type="button" style="color:white;background:#5252ff;margin-top:1vw" onclick="document.getElementById('savemed').click()">Sauvegarder</button>
+                                  <button hidden type="submit" id="savemed" name="savemed"></button>
+                                   <?php
+                                   if(isset($_POST['savemed'])){
+                    $nommed = $_POST['nommed'];
+                    $typemed = $_POST['typemed'];
+                                        $datexp = $_POST['datexp'];
+                    $observationmed = $_POST['observationmed'];
+                    if(!file_exists("medicaments.txt"))
+                       file_put_contents("medicaments.txt", "");
+ $json = json_decode(file_get_contents("medicaments.txt"),TRUE);
+  if(!empty($json))
+                            {
+                               $json[count($json)+1] = array("nommed" => $nommed, "typemed" => $typemed,"datexp"=>$datexp,"observationmed"=>$observationmed); 
+                            }
+                           else{
+                           $json[1] = array("nommed" => $nommed, "typemed" => $typemed,"datexp"=>$datexp,"observationmed"=>$observationmed); 
+                           }
+                           file_put_contents("medicaments.txt", json_encode($json));
+                        
+                    
+                    
+                     echo "<script>window.location.href='dashboard.php?page=6_3'</script>";
+                }
+                                  ?>
                               </div>
                               <div id="dv2">
-                              <button type="button" style="color:white;background:#ff2424;margin-top:1vw" onclick=''>Annuler</button>
+                              <button type="button" style="color:white;background:#ff2424;margin-top:1vw" onclick='ClearMed()'>Annuler</button>
                               </div>
                               </div>  
                             
@@ -1184,7 +1366,217 @@ $json = json_decode(file_get_contents("consultations.txt"),TRUE);
                        
            
                    </div>
+           
+           <div id="dash">
+            
+                    <div class="card">
+                       <div id="dv1">
+                       <h3 style="font-size:1.5vw">Docteurs</h3>
+                            <h3 style="margin-top:0.5vw;margin-bottom:1vw;color:#ff5252">
+                                <?php
+                                 if(file_exists("doctors.txt")){
+
+$json = json_decode(file_get_contents("doctors.txt"),TRUE);
+
+            
+             if(!empty($json))
+                 echo count($json)." ";
+                                     else echo "0 ";
+                 
+                                 }
+                                ?>docteur(s)</h3>
+                           <button type="button" onclick="AddDoc();">Ajouter nouveau</button>
+                           <button type="button" onclick="window.location.href='dashboard.php?page=6_liste1'">Voir liste</button>
+                       </div>
+                       <div id="dv2">
+                       <img src="images/patient.png"/>
+                       </div>
+                       </div>
+            
+                    <div class="card">
+                       <div id="dv1">
+                       <h3 style="font-size:1.5vw">Utilisateurs</h3>
+                            <h3 style="margin-top:0.5vw;margin-bottom:1vw;color:#ff5252">
+                                <?php
+                                 if(file_exists("users.txt")){
+
+$json = json_decode(file_get_contents("users.txt"),TRUE);
+
+            
+             if(!empty($json))
+                 echo count($json)." ";
+                                     else echo "0 ";
+                 
+                                 }
+                                ?>utilisateur(s)</h3>
+                           <button type="button" onclick="AddUser();">Ajouter nouveau</button>
+                           <button type="button" onclick="window.location.href='dashboard.php?page=6_liste2'">Voir liste</button>
+                       </div>
+                       <div id="dv2">
+                       <img src="images/patient.png"/>
+                       </div>
+                       </div>
+                                 <div class="card">
+                       <div id="dv1">
+                       <h3 style="font-size:1.5vw">Medicaments</h3>
+                            <h3 style="margin-top:0.5vw;margin-bottom:1vw;color:#ff5252">
+                                <?php
+                                 if(file_exists("medicaments.txt")){
+
+$json = json_decode(file_get_contents("medicaments.txt"),TRUE);
+
+            
+             if(!empty($json))
+                 echo count($json)." ";
+                                     else echo "0 ";
+                 
+                                 }
+                                ?>medicament(s)</h3>
+                           <button type="button" onclick="AddMed();">Ajouter nouveau</button>
+                           <button type="button" onclick="window.location.href='dashboard.php?page=6_liste3'">Voir liste</button>
+                       </div>
+                       <div id="dv2">
+                       <img src="images/patient.png"/>
+                       </div>
+                       </div>
+                 
+           </div>
                   
+                   </div>
+                   
+                   </div>
+                               
+               </div>
+                   
+               <div class="main"  id="stats2">
+                
+               <div id="inner" style="overflow-x: hidden;" >
+       <div style="display:flex;;overflow-y:auto;position:relative;flex-direction:column;;justify-content:center"        >
+                      <h2>Statistiques</h2>
+                <div id="gridview">
+           <canvas id="myChart" style="width:95%;margin-bottom:10vw;"></canvas>
+                    
+           <?php
+                    $p=0;
+                    $r=0;
+                    $c=0;
+                    $d=0;
+                    $u=0;
+                    $m=0;
+                    if(file_exists("patiens.txt"))
+{
+ $json = json_decode(file_get_contents("patiens.txt"),TRUE);
+
+            
+             if(!empty($json)){
+                 $p=count($json);
+             }
+                    }
+                     if(file_exists("consultations.txt"))
+{
+ $json = json_decode(file_get_contents("consultations.txt"),TRUE);
+
+            
+             if(!empty($json)){
+                 $c=count($json);
+             }
+                    }
+                      if(file_exists("rdvs.txt"))
+{
+ $json = json_decode(file_get_contents("rdvs.txt"),TRUE);
+
+            
+             if(!empty($json)){
+                 $r=count($json);
+             }
+                    }
+                    if(file_exists("users.txt"))
+{
+ $json = json_decode(file_get_contents("users.txt"),TRUE);
+
+            
+             if(!empty($json)){
+                 $u=count($json);
+             }
+                    }
+                    
+                     if(file_exists("doctors.txt"))
+{
+ $json = json_decode(file_get_contents("doctors.txt"),TRUE);
+
+            
+             if(!empty($json)){
+                 $d=count($json);
+             }
+                    }
+                     if(file_exists("medicaments.txt"))
+{
+ $json = json_decode(file_get_contents("medicaments.txt"),TRUE);
+
+            
+             if(!empty($json)){
+                 $m=count($json);
+             }
+                    }
+                    
+                    $ar = array($p,$c,$r,$u,$d,$m);
+                    $max = $ar[0];
+                    for($i=1;$i<count($ar);$i++)
+                    if($ar[$i] > $max)
+                        $max = $ar[$i];
+                    
+                    
+                    echo "<script
+src=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js\">
+</script>";
+                    echo "<script>
+                    var xValues = ['Les patients','Les RDVs','Les consultations','Les docteurs','Les utilisateurs','Les medicaments'];
+var yValues = [".$p.",".$r.",".$c.",".$d.",".$u.",".$m."];
+new Chart(\"myChart\", {
+  type: \"line\",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: \"rgba(0,0,255,1.0)\",
+      borderColor: \"rgba(0,0,255,0.1)\",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 0, max:".$max."}}],
+    }
+  }
+});
+                    
+                    </script>";
+                    ?>
+           </div>
+                   </div>
+                   
+                   </div>
+                               
+               </div>
+     
+     
+               
+                      
+               <div class="main"  id="aide">
+                
+               <div id="inner" style="overflow-x: hidden;" >
+       <div style="display:flex;;overflow-y:auto;position:relative;flex-direction:column;;justify-content:center"        >
+                      <h2>Aide</h2>
+                <div id="gridview" style="margin:0">
+       
+                    <video width="100%" height="100%" controls>
+  <source src="aide.mkv" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+       
+           </div>
                    </div>
                    
                    </div>
@@ -1427,8 +1819,14 @@ foreach($json as $item){
              var page = url.split("?")[1].split("=")[1].trim();
                  if(page.indexOf("&")!=-1)
                      page = page.split("&")[0].trim();
+                 if(page=="aide"){
+                     document.getElementById("aide").style.display="block";
+                 }
                  if(page=="stats"){
                      document.getElementById("stats").style.display="block";
+                 }
+                  if(page=="statistiques"){
+                     document.getElementById("stats2").style.display="block";
                  }
             else if(page=="0"){
                 Loading();
@@ -1524,6 +1922,40 @@ foreach($json as $item){
                 
                 subs.style.display="block";
             } 
+                 if(page=="6_liste1"){
+                Loading();
+                document.getElementById("informations-generales").style.display="block";
+                
+                  var main = items[3].getElementsByClassName("item-main")[0];
+             var subs = items[3].getElementsByClassName("item-subs")[0];
+                
+                subs.style.display="block";
+                     
+                     document.getElementsByName("gd1")[0].style.display="block";
+            } 
+                   if(page=="6_liste2"){
+                Loading();
+                document.getElementById("informations-generales").style.display="block";
+                
+                  var main = items[3].getElementsByClassName("item-main")[0];
+             var subs = items[3].getElementsByClassName("item-subs")[0];
+                
+                subs.style.display="block";
+                     
+                     document.getElementsByName("gd2")[0].style.display="block";
+            } 
+                   if(page=="6_liste3"){
+                Loading();
+                document.getElementById("informations-generales").style.display="block";
+                
+                  var main = items[3].getElementsByClassName("item-main")[0];
+             var subs = items[3].getElementsByClassName("item-subs")[0];
+                
+                subs.style.display="block";
+                     
+                     document.getElementsByName("gd3")[0].style.display="block";
+            } 
+                 
                     if(page=="6_1"){
                 Success();
                 document.getElementById("informations-generales").style.display="block";
@@ -1534,9 +1966,31 @@ foreach($json as $item){
                 subs.style.display="block";
                         Slide1(1);
             } 
+                if(page=="6_2"){
+                Success();
+                document.getElementById("informations-generales").style.display="block";
                 
+                  var main = items[3].getElementsByClassName("item-main")[0];
+             var subs = items[3].getElementsByClassName("item-subs")[0];
+                
+                subs.style.display="block";
+                        Slide1(2);
+            } 
+                   if(page=="6_3"){
+                Success();
+                document.getElementById("informations-generales").style.display="block";
+                
+                  var main = items[3].getElementsByClassName("item-main")[0];
+             var subs = items[3].getElementsByClassName("item-subs")[0];
+                
+                subs.style.display="block";
+                        Slide1(3);
+            }  
                  
             }
+                else {
+                    document.getElementById("stats").style.display="block";
+                }
             }, 100);
            
      
@@ -1898,10 +2352,69 @@ document.getElementById("patient").value=name;
             }
             function SaveDoc(){ document.getElementById("savedoc").click();
             }
-            
-            
-            
+            function SaveUser(){ document.getElementById("saveuser").click();
+            }
+            function ClearMed(){
+                 document.getElementById("nommed").value="";
+                document.getElementById("typemed").value="";
+                document.getElementById("observationmed").value="";
+            }
+            function ClearUser(){
+                 document.getElementById("nomutilisateur").value="";
+                document.getElementById("motdepasse").value="";
+                document.getElementById("motdepasse2").value="";
+            }
+            function Cleardoc(){
+                document.getElementById("nomdoc").value="";
+                document.getElementById("prenomdoc").value="";
+                document.getElementById("anneedenaissancedoc").value="";
+                document.getElementById("emaildoc").value="";
+                document.getElementById("mobiledoc").value="";
+                document.getElementById("adressedoc").value="";
+            }
+            function AddDoc(){
+                 Loading();
+                   document.getElementById("stats").style.display="none";
+                
+                document.getElementById("informations-generales").style.display="block";
+                
+                  var main = items[3].getElementsByClassName("item-main")[0];
+             var subs = items[3].getElementsByClassName("item-subs")[0];
+                
+                subs.style.display="block";
+                        Slide1(1);
+            }
+            function AddUser(){
+                 Loading();
+                   document.getElementById("stats").style.display="none";
+                
+                document.getElementById("informations-generales").style.display="block";
+                
+                  var main = items[3].getElementsByClassName("item-main")[0];
+             var subs = items[3].getElementsByClassName("item-subs")[0];
+                
+                subs.style.display="block";
+                        Slide1(2);
+            }
+            function AddMed(){
+                 Loading();
+                   document.getElementById("stats").style.display="none";
+                
+                document.getElementById("informations-generales").style.display="block";
+                
+                  var main = items[3].getElementsByClassName("item-main")[0];
+             var subs = items[3].getElementsByClassName("item-subs")[0];
+                
+                subs.style.display="block";
+                        Slide1(3);
+            }
+            function Aide(){
+               
+                window.location.href='dashboard.php?page=aide'
+                
+            }
 </script>
+                   
         </form> 
     </body>
 </html>

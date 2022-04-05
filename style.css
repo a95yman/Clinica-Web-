@@ -105,15 +105,19 @@ body{
     width: 100%;
     overflow-x: auto;
     border: none;
+    table-layout: fixed;
     border-collapse:collapse
 }
 #td1 h3{
     margin: 1vw;
 }
+
 #table1 td{
     font-size: 1vw;
-     height: 2.5vw;
+     height: 3vw;
     text-align: center;
+      vertical-align: middle;
+    align-items: center;
     border: none;
      max-width: 6vw;
  overflow: hidden;
@@ -319,7 +323,7 @@ body{
     align-items: center;
 justify-content: center;
 }
-#inner #gridview{
+ #gridview{
     width: 100%;
     margin: 0 auto;
     display: flex;
@@ -487,7 +491,82 @@ justify-content: center;
     justify-content: center;
     
 }
-#stats{
+#header{
+    width: 100%;
+    height: 2vw;
+    color:white;
+    display: flex;
+    align-items: center;
+    background: #ff5252;
+}
+#header a{
+    position: relative;
+    left: 1vw;
+    font-size: 1vw;
+}
+#container4 #nav{
+    width: 100%;
+    height: 5vw;
+    background: rgba(255,255,255,0.8);
+}
+#container4{
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+}
+#container4 img{
+    width: 100%;
+    position: absolute;
+    top: 2vw;
+    filter: blur(2vw);
+    z-index: -1;
+}
+#poster2{
+    width: 40vw;
+    margin-right: 5vw;
+    position: relative;
+    top: 5vw;
+    height: 30vw;
+    margin-left: auto;
+    background: url("images/doctor1.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+#poster{
+    width: 13vw;
+    position: absolute;
+    top: 2vw;
+    left: 4vw;
+    box-shadow: rgba(0,0,0,0.3) 0px 5px 10px;
+}
+#container4 #content{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+#container4 #content #dv1 img{
+    width: 10vw;
+}
+#container4 #content #dv1 button{
+    width: 14vw;
+    height: 3vw;
+    font-size: 1vw;
+    border: none;
+    background: white;
+}
+#container4 #content #dv1{
+    width: 100%;
+    height: 30vw;
+    padding-top: 5vw;
+    display: flex;
+}
+#container4 #content #dv2{
+    width: 100%;
+    height:100%;
+    background: white;
+}
+#stats,#stats2, #aide{
     display: none;
     align-items: center;
     justify-content: center;
@@ -627,8 +706,55 @@ justify-content: center;
     left: 0;
     top: 0;
 }
+#container3{
+    width:40%;
+    height: 80%;
+    box-shadow: rgba(0,0,0,0.1) 0px 5px 15px ;
+    border: 1px solid #ccc;
+    font-size: 1.2vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #303030;
+}
+#container3 button{
+    width: 10vw;
+    height: 3vw;
+    margin-top: 2.5vw;
+    border: none;
+    background: #ff5252;
+    color: white;
+    font-size: 1.2vw;
+}
+#container3 input[type="text"]{
+    width: 90%;
+    height: 3vw;
+    padding: 1vw;
+    margin-top: 0.5vw;
+    font-size: 1.2vw;
+}
+#container3 img{
+    width: 9vw;
+}
 @media only screen and (max-width:800px){
-   
+  
+    #container3{
+        width:70%;
+    }
+    #container3 img{
+        width: 20vw;
+    }
+    #container3 button{
+        height: 5vw;
+    }
+    #container3 input[type="text"]{
+    width: 90%;
+    height: 5vw;
+    padding: 1vw;
+    margin-top: 0.5vw;
+    font-size: 2vw;
+}
     #error-mobile{
         display: none;
     }
