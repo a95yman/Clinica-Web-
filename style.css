@@ -566,7 +566,7 @@ justify-content: center;
     height:100%;
     background: white;
 }
-#stats,#stats2, #aide{
+#stats,#stats2, #aide, #authentification, #database, #deletion{
     display: none;
     align-items: center;
     justify-content: center;

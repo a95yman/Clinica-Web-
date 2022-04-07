@@ -91,16 +91,17 @@ session_start();
                        <img src="images/consulting.png" class="icon"/>
                        <a>Consulation</a>
                    </div>
-                       <div class="item-main">
+                       <div class="item-main" onclick="Show('authentification')">
                        <img src="images/authentication.png" class="icon"/>
                        <a>Authentification</a>
                    </div>
-                       <div class="item-main">
+                       <div class="item-main" onclick="Show('database')">
                        <img src="images/database.png" class="icon"/>
                        <a>Fichier de donnees</a>
                    </div>
-                       <div class="item-main" onclick=";document.getElementById('logout').click();">
-                           <button hidden id="logout" name="logout">
+                       <div class="item-main" onclick="document.getElementById('supp').click();">
+                           <button hidden id="logout" name="logout"></button>
+                               <button hidden id="supp" name="supp">
                           
                            </button>
                             <?php
@@ -108,9 +109,12 @@ session_start();
                                    $_SESSION['user'] = "0";
                                  echo "<script>window.location.href='login.php'</script>";
                                }
+                                if(isset($_POST['supp'])){
+                                 echo "<script>window.location.href='dashboard.php?page=deletion'</script>";
+                               }
                                ?>
                        <img src="images/delete.png" class="icon"/>
-                       <a>Se deconnecter</a>
+                       <a>Suppression de donnees</a>
                    </div>
                    </div>
                </div>
@@ -282,7 +286,7 @@ session_start();
             
              if(!empty($json)){
                 $id = $_POST['id333'];
-                               $json[$id] = array("nom" => "");  
+                               $json[$id] = array("nom" => "", "prenom" => "","sexe"=>"","annedenaissance"=>"", "mobile" =>"", "email"=>"","etatcivil"=>"","assurance"=>"","adresse"=>""); 
                       
                            file_put_contents("patiens.txt", json_encode($json));
                  
@@ -1585,6 +1589,243 @@ Your browser does not support the video tag.
      
                
                
+               <button hidden id="auth" name="auth"></button>
+                               <button hidden id="data" name="data"></button>
+               <?php
+               if(isset($_POST['auth'])){
+                   echo "<script>window.location.href='dashboard.php?page=auth'</script>";
+               }
+                   if(isset($_POST['data'])){
+                   echo "<script>window.location.href='dashboard.php?page=data'</script>";
+               }
+               ?>
+               <div class="main"  id="authentification">
+                
+               <div id="inner"         >
+                      <h2>Authentification</h2>
+                
+                   <div style="display:flex;align-items:center;justify-content:center;widht:100%;height:100%;">
+                   <div  id="container3" name="loginpanel">
+                   <img src="images/logo2.png"/>
+                       <div style="margin-top:1.5vw;display:flex;width:90%">
+                       <a >Nom d'utilisateur</a>
+                       </div>
+                       <input type="text" autocomplete="off" id="nom1" name="nom11"/>
+                       <div style="margin-top:1.5vw;display:flex;width:90%">
+                       <a >Mot de passe</a>
+                       </div>
+                       <input type="text" autocomplete="off" id="pass11" name="pass11"/>
+                       <div style="display:flex">
+                           
+                       <button name="login">Login</button>
+                       
+                           <button type="button" id="signup1" style="width:14vw;margin-left:1vw;">Besoin d'un compte</button>
+                       </div>
+                            <?php
+                           if(isset($_POST['login']))
+                           {
+                                if(file_exists("users.txt")){
+                                    
+                                    
+                                     $json = json_decode(file_get_contents("users.txt"),TRUE);
+
+            
+             if(!empty($json)){
+                 $c=0;
+                 foreach($json as $item){
+                     $nom = $item['nomutilisateur'];
+                     $motdepasse = $item['motdepasse'];
+                     
+                     $nom1 = $_POST['nom11'];
+                     $motdepasse1 = $_POST['pass11'];
+                   
+                     
+                     if($nom==$nom1 && $motdepasse1==$motdepasse){
+                         $c=1;
+                         break;
+                     }
+                 }
+                 
+                 if($c==0){
+                     echo "<br>Incorrect info";
+                 }
+                 else{
+                     $_SESSION['user'] = "1";
+                     echo "<script>window.location.href='Dashboard.php?page=stats'</script>";
+                 }
+                 
+             }
+                                }
+                           }
+                           ?>
+                   </div>
+                       <div id="container3" name="signuppanel" style="display:none;height:95%">
+                   <img src="images/logo2.png"/>
+                       <div style="margin-top:1.5vw;display:flex;width:90%">
+                       <a >Nom d'utilisateur</a>
+                       </div>
+                       <input type="text" autocomplete="off" id="nom1" name="nom1"/>
+                       <div style="margin-top:1.5vw;display:flex;width:90%">
+                       <a >Mot de passe</a>
+                       </div>
+                       <input type="text" autocomplete="off" id="pass1" name="pass1"/>
+                             <div style="margin-top:1.5vw;display:flex;width:90%">
+                       <a >Retaper Mot de passe</a>
+                       </div>
+                       <input type="text" autocomplete="off" id="pass1" name="pass1"/>
+                       <div style="display:flex">
+                       <button name="signupp">Creer compte</button>
+                           <?php
+                           if(isset($_POST['signupp'])){
+                           
+                    $nomutilisateur = $_POST['nom1'];
+                    $motdepasse = $_POST['pass1'];
+                    if(!file_exists("users.txt"))
+                       file_put_contents("users.txt", "");
+ $json = json_decode(file_get_contents("users.txt"),TRUE);
+  if(!empty($json))
+                            {
+                               $json[count($json)+1] = array("nomutilisateur" => $nomutilisateur, "motdepasse" => $motdepasse); 
+                            }
+                           else{
+                           $json[1] = array("nomutilisateur" => $nomutilisateur, "motdepasse" => $motdepasse); 
+                           }
+                           file_put_contents("users.txt", json_encode($json));
+                        
+                    
+                    
+                 $_SESSION['user'] = "1";
+                     echo "<script>window.location.href='Dashboard.php?page=stats'</script>";
+                }
+                         
+                           ?>
+                           <button type="button" id="login2" style="width:14vw;margin-left:1vw;">Retourner</button>
+                       </div>
+                        
+                   </div>
+   </div>
+        
+                   </div>
+                   
+                   </div>
+      
+                      
+               <div class="main"  id="database">
+                
+               <div id="inner"         >
+                      <h2>Les fichiers de donees</h2>
+                  <input style="margin-left:6vw;margin-bottom:1.5vw;margin-top:1vw" type="file" id="myFile" name="filename" onchange="document.getElementById('fichier').value=this.value;">
+  <br>
+                   <div id="bar">
+                   <div id="dv1">
+                       <h3>Le fichier</h3>
+                       <input type="text" id="fichier" name="fichier" readonly/>
+                       </div>
+                       <div id="dv2">
+                       
+                       </div>
+                   </div>
+                     <div id="bar">
+                   <div id="dv1">
+                       <button onclick="Con()" type="button" style="color:white;background:#5252ff;">Confirmer</button>
+                       </div>
+                       <div id="dv2">
+                       
+                       </div>
+                   </div>
+                   </div>
+                   
+                   </div>
+      
+               
+                <div class="main"  id="deletion">
+                
+               <div id="inner"         >
+                      <h2>Suppression des donnees</h2>
+                <div id="gridview">
+                   <?php
+                    
+                     if(file_exists("medicaments.txt")){
+                                $json = json_decode(file_get_contents("medicaments.txt"),TRUE);
+
+            
+             if(!empty($json)){
+               echo "<table id='table1'><tr><th>Nom</th><th>Type</th><th>Date expiration</th><th>Observation</th><th></th></tr>";
+                 $cs=0;
+                 $col="";
+                 $counter=0;
+                 $id=0;
+                  foreach($json as $item){
+                      $counter++;
+                      if(!empty($item['nommed'])){
+                      $id++;
+                      if($cs==0){
+                          $col="white";
+                          $cs=1;
+                      }
+                      else{
+                          $col="#eee";
+                          $cs=0;
+                      }
+                      echo "<tr style='background:".$col."'>";
+                      echo "<td style='vertical-align: middle' style='vertical-align: middle'>".$item['nommed']."</td>";
+                      echo "<td style='vertical-align: middle'>".$item['typemed']."</td>";
+                      echo "<td style='vertical-align: middle'>".$item['datexp']."</td>";
+                       echo "<td style='vertical-align: middle'>".$item['observationmed']."</td>";
+                       
+                       echo "<td id='deletemed$id' onclick='Delete2(\"".$id."\")'><img class='small_icon' src='images/delete_icon.png'/></td>";
+                      echo "</tr>";
+                      }
+                  }
+                 echo "</table>";
+                 
+             }
+                            }
+                    
+                    if(isset($_POST['deletemed'])){
+                        $idtodelete = $_POST['idtodelete'];
+                        
+                        if(file_exists("medicaments.txt")){
+                                $json = json_decode(file_get_contents("medicaments.txt"),TRUE);
+
+            
+             if(!empty($json)){
+                 $id2=0;
+                  foreach($json as $item)
+                  {
+                      $id2++;
+                      if($id2 == $idtodelete){
+                          
+                          $json[$id2] = array("nommed" => "", "typemed" => "","datexp"=>"","observationmed"=>""); 
+                           file_put_contents("medicaments.txt", json_encode($json));
+                          
+                           break;
+                          
+                          
+                          
+                      }
+                  }
+                  echo "<script>window.location.href='dashboard.php?page=deletion'</script>";
+             }
+                            
+                        }
+                        
+                        
+                    }
+                    
+                    ?>
+                    <input hidden type="text" id="idtodelete" name="idtodelete"/>
+                    <button hidden id="deletemed" name="deletemed"></button>
+                   </div>
+                   </div>
+                   
+                   </div>
+      
+                      
+               
+               
+               
+               
                </div>
         </div>
         <div id="popup">
@@ -1784,6 +2025,14 @@ foreach($json as $item){
                    
                    </div>
         <script type="text/javascript">
+             document.getElementById("signup1").onclick=function(){
+              document.getElementsByName("loginpanel")[0].style.display="none";
+              document.getElementsByName("signuppanel")[0].style.display="flex";
+          }
+           document.getElementById("login2").onclick=function(){
+              document.getElementsByName("loginpanel")[0].style.display="flex";
+              document.getElementsByName("signuppanel")[0].style.display="none";
+          }
             var popup_trigger="0";
                 function createCookie(name, value, days) {
   var expires;
@@ -1825,6 +2074,7 @@ foreach($json as $item){
                  if(page=="stats"){
                      document.getElementById("stats").style.display="block";
                  }
+                 
                   if(page=="statistiques"){
                      document.getElementById("stats2").style.display="block";
                  }
@@ -1986,6 +2236,27 @@ foreach($json as $item){
                 subs.style.display="block";
                         Slide1(3);
             }  
+                   if(page=="deletion"){
+                     document.getElementById("deletion").style.display="block";
+                       var main = items[3].getElementsByClassName("item-main")[0];
+             var subs = items[3].getElementsByClassName("item-subs")[0];
+                
+                subs.style.display="block";
+                 }
+                  if(page=="auth"){
+                     document.getElementById("authentification").style.display="block";
+                       var main = items[3].getElementsByClassName("item-main")[0];
+             var subs = items[3].getElementsByClassName("item-subs")[0];
+                
+                subs.style.display="block";
+                 }
+                 if(page=="data"){
+                     document.getElementById("database").style.display="block";
+                      var main = items[3].getElementsByClassName("item-main")[0];
+             var subs = items[3].getElementsByClassName("item-subs")[0];
+                
+                subs.style.display="block";
+                 }
                  
             }
                 else {
@@ -2051,7 +2322,15 @@ document.body.clientWidth;
                  else if(id==="informations-generales"){
                      document.getElementById("inf").click();
                  }
+                  else if(id==="authentification"){
+                     document.getElementById("auth").click();
+                 }
+                  else if(id==="database"){
+                     document.getElementById("data").click();
+                 }
              }, 100);
+                   
+                   
                }
                 
                 else{
@@ -2157,6 +2436,14 @@ var success = document.getElementById("success");
             function Success(){
                  
              success.style.display="flex";
+                setTimeout(function(){
+                    success.style.display="none";
+               
+                
+                }, 3000);
+            }
+            function Con(){
+                 success.style.display="flex";
                 setTimeout(function(){
                     success.style.display="none";
                
@@ -2412,6 +2699,10 @@ document.getElementById("patient").value=name;
                
                 window.location.href='dashboard.php?page=aide'
                 
+            }
+            function Delete2(id){
+                document.getElementById("idtodelete").value=id;
+                document.getElementById("deletemed").click();
             }
 </script>
                    

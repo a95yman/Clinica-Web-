@@ -31,7 +31,7 @@ if(isset($_SESSION['user'])){
                            
                        <button name="login">Login</button>
                        
-                           <button type="button" id="signup1" style="width:14vw;margin-left:1vw;">Creer compte</button>
+                           <button type="button" id="signup1" style="width:14vw;margin-left:1vw;">Besoin d'un compte</button>
                        </div>
                             <?php
                            if(isset($_POST['login']))
@@ -111,7 +111,7 @@ if(isset($_SESSION['user'])){
                 }
                          
                            ?>
-                           <button type="button" id="login2" style="width:14vw;margin-left:1vw;">Login</button>
+                           <button type="button" id="login2" style="width:14vw;margin-left:1vw;">Retourner</button>
                        </div>
                         
                    </div>
