@@ -87,7 +87,7 @@ session_start();
                        <img src="images/info.png" class="icon"/>
                        <a>Informations generales</a>
                    </div>
-                        <div class="item-main">
+                        <div style="display:none" class="item-main">
                        <img src="images/consulting.png" class="icon"/>
                        <a>Consulation</a>
                    </div>

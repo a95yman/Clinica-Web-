@@ -1,0 +1,1 @@
+{"1":{"nommed":"Med 1","typemed":"Type 1","datexp":"2022-04-01","observationmed":"Obs 1"},"2":{"nommed":"Med 2","typemed":"Type 2","datexp":"2020-12-31","observationmed":"Obs 2"}}
